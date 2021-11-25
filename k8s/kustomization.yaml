@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: hideyuki-mizuta-pipeline-from-scratch
+namespace: e28193-app
 commonAnnotations:
   enzo: "true"
 resources:
