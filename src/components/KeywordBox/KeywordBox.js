@@ -87,11 +87,12 @@ export const KeywordBox = ({ keywordInfo, transcriptArray }) => {
                 return null;
               }
               if (element.type === 'normal') {
-                return (
-                  <span
-                    key={`keywordbox-text-${overallIndex}-${elementIndex}`}
-                  >{`${element.text}`}</span>
-                );
+ //               return (
+ //                 <span
+ //                   key={`keywordbox-text-${overallIndex}-${elementIndex}`}
+ //                 >{`${element.text}`}</span>
+ //               );
+ //             } else if (element.type === 'keyword') {
               } else if (element.type === 'keyword') {
                 return (
                   <p>
