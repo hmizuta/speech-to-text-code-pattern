@@ -8,6 +8,10 @@ RUN npm set progress=false && \
   npm config set depth 0 && \
   npm ci --only-production --ignore-scripts
 
+WORKDIR /opt/app-root/src/node_modules/puppeteer
+RUN node install.js
+WORKDIR /opt/app-root/src
+
 COPY ./config /opt/app-root/src/config
 COPY ./public /opt/app-root/src/public
 COPY ./src /opt/app-root/src/src
