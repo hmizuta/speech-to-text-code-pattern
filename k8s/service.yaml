@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: e28193-app
+    app.kubernetes.io/instance: e28193-app
+    app.kubernetes.io/name: e28193-app
+  name: e28193-app
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 5000
+  selector:
+    app.kubernetes.io/instance: e28193-app
+    app.kubernetes.io/name: e28193-app
+  sessionAffinity: None
+  type: ClusterIP
