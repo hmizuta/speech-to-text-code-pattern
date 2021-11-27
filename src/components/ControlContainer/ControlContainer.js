@@ -5,7 +5,7 @@ import {
   FormGroup,
   TextArea,
   Tile,
-  ToggleSmall,
+//  ToggleSmall,
 } from 'carbon-components-react';
 import SubmitContainer from '../SubmitContainer';
 import models from '../../data/models.json';
@@ -77,17 +77,9 @@ export const ControlContainer = ({
           light
         />
       </FormGroup>
-      <FormGroup legendText="Detect multiple speakers (only supported with sample audio)">
-        <ToggleSmall
-          id="speaker-label-toggle"
-          aria-label="Speaker label toggle"
-          disabled={!model || !model.supportsSpeakerLabels}
-          toggled={useSpeakerLabels}
-          onToggle={() => {
-            setUseSpeakerLabels(!useSpeakerLabels);
-          }}
-        />
-      </FormGroup>
+
+
+
       <SubmitContainer
         isRecording={isRecording}
         isSamplePlaying={isSamplePlaying}
@@ -136,3 +128,16 @@ ControlContainer.defaultProps = {
 };
 
 export default ControlContainer;
+/*
+<FormGroup legendText="Detect multiple speakers (only supported with sample audio)">
+<ToggleSmall
+  id="speaker-label-toggle"
+  aria-label="Speaker label toggle"
+  disabled={!model || !model.supportsSpeakerLabels}
+  toggled={useSpeakerLabels}
+  onToggle={() => {
+    setUseSpeakerLabels(!useSpeakerLabels);
+  }}
+/>
+</FormGroup>
+*/

@@ -1,79 +1,47 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { createWordRegex } from './utils';
 
-const mapTranscriptTextToElements = (text, keywordInfo, totalIndex) => {
-  let finalSentenceArray = [];
-  let matches = [];
 
-  if (keywordInfo.length > 0) {
-    const regex = createWordRegex(keywordInfo);
-    matches = text.split(regex);
-  }
-
-  // If we don't have words to find yet, just return the interim text.
-  if (matches.length === 0) {
-    return [
-      {
-        text,
-        type: 'normal',
-      },
-    ];
-  }
-
-  const wordOccurences = {};
-  finalSentenceArray = matches.map((sentenceFragment, index) => {
-    // Use lowercased version when searching through keyword map.
-    const fragmentToSearch = sentenceFragment.toLowerCase();
-
-    if (index % 2 === 0) {
-      return {
-        text: sentenceFragment,
-        type: 'normal',
-      };
+const searchKeywordInText = (text, keywordInfo) => {
+  let results = [];
+  let allKeywords = [];
+  keywordInfo.forEach(sectionKeywords => {
+    allKeywords = [...allKeywords, ...Object.keys(sectionKeywords)];
+  });
+  
+  const textlen = text.length;
+  allKeywords.map(keyword => {
+    let lastIndex = 0;
+    while (lastIndex < textlen) {
+      const pos = text.indexOf(keyword, lastIndex);
+      if (pos < 0) {
+        lastIndex = textlen;
+      } else {
+        lastIndex = pos + keyword.length;
+        const st = pos - 5 > -1 ? pos - 5 : 0;
+        const ed = lastIndex + 5 < textlen ? lastIndex + 5 : textlen;
+        const subtext = text.slice(st, ed);
+        let oneresult = {
+          'pos' : pos,
+          'keyword' : keyword,
+          'subtext' : subtext
+        };
+        results.push(oneresult);
+      }
     }
-
-    // Find keyword info object to use based on text from sentenceFragment and
-    // current index in wordOccurences.
-    const keywordInfoMatch =
-      keywordInfo[totalIndex] && keywordInfo[totalIndex][fragmentToSearch];
-    let keywordOccurenceIndex = 0;
-    if (wordOccurences[fragmentToSearch]) {
-      keywordOccurenceIndex = wordOccurences[fragmentToSearch];
-      wordOccurences[fragmentToSearch] += 1;
-    } else {
-      wordOccurences[fragmentToSearch] = 1;
-    }
-    const infoForOccurence =
-      keywordInfoMatch && keywordInfoMatch[keywordOccurenceIndex];
-
-    // Bail in case we can't get the keyword info for whatever reason.
-    if (!infoForOccurence) {
-      return {};
-    }
-
-    return {
-      text: sentenceFragment,
-      type: 'keyword',
-      startTime: infoForOccurence.start_time,
-      endTime: infoForOccurence.end_time,
-      confidence: infoForOccurence.confidence,
-    };
   });
 
-  return finalSentenceArray;
-};
+  return results;
+}
+
 
 export const KeywordBox = ({ keywordInfo, transcriptArray }) => {
   return (
     <div className="keyword-box">
       {transcriptArray.map((transcriptItem, overallIndex) => {
         const { speaker, text } = transcriptItem;
-        const parsedTextElements = mapTranscriptTextToElements(
-          text,
-          keywordInfo,
-          overallIndex,
-        );
+        const searchResults = searchKeywordInText(text, keywordInfo);
+
 
         return (
           <div key={`keyword-${overallIndex}`}>
@@ -82,30 +50,24 @@ export const KeywordBox = ({ keywordInfo, transcriptArray }) => {
                 {`Speaker ${speaker}: `}
               </span>
             )}
-            {parsedTextElements.map((element, elementIndex) => {
+
+            {searchResults.sort((a,b)=> {return a.pos - b.pos;})
+            .map((element, elementIndex) => {
               if (!element) {
                 return null;
-              }
-              if (element.type === 'normal') {
- //               return (
- //                 <span
- //                   key={`keywordbox-text-${overallIndex}-${elementIndex}`}
- //                 >{`${element.text}`}</span>
- //               );
- //             } else if (element.type === 'keyword') {
-              } else if (element.type === 'keyword') {
+              } else {
                 return (
                   <p>
-                  <span
-                    key={`keywordbox-keyword-${overallIndex}-${elementIndex}`}
-                  >
-                    Keyword: {`${element.text}`}
-                  </span>
+                    <span
+                      key={`searchresult-${overallIndex}-${elementIndex}`}
+                    >
+                      Position:{`${element.pos}`}, 
+                      Keyword: {`${element.keyword}`},
+                      Subtext:{`${element.subtext}`}
+                    </span>
                   </p>
                 );
               }
-
-              return null;
             })}
           </div>
         );
