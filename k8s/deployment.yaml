@@ -31,8 +31,8 @@ spec:
             - name: PROTOCOLS
             - name: LOG_LEVEL
               value: debug
-          image: quay.io/hmizuta/checkride-app:v0.1.0
-          imagePullPolicy: IfNotPresent
+          image: quay.io/hmizuta/checkride-app:latest
+          imagePullPolicy: Always
           envFrom:
           - configMapRef:
               name: e28193-app-cm
