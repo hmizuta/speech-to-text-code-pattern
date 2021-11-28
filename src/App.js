@@ -11,7 +11,7 @@ import useScript from './hooks/useScript';
 
 const HEADER_TITLE = 'Watson Speech to Text Example for CheckRide';
 const HEADER_DESCRIPTION =
-  'Mizuta CheckRide';
+  'Mizuta CheckRide App';
 const HEADER_LINKS = [
   <Link
     className="link"
