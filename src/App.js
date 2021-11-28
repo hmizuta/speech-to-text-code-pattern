@@ -11,7 +11,7 @@ import useScript from './hooks/useScript';
 
 const HEADER_TITLE = 'Watson Speech to Text Example for CheckRide';
 const HEADER_DESCRIPTION =
-  'IBM Watson Speech to Text is a cloud-native API that transforms voice into written text.';
+  'Mizuta CheckRide';
 const HEADER_LINKS = [
   <Link
     className="link"
