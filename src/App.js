@@ -9,7 +9,7 @@ import Header from './components/Header';
 import ServiceContainer from './components/ServiceContainer';
 import useScript from './hooks/useScript';
 
-const HEADER_TITLE = 'Watson Speech to Text Example for CheckRide';
+const HEADER_TITLE = 'Watson Speech to Text Example for GitOps';
 const HEADER_DESCRIPTION =
   'Mizuta CheckRide App and GipOps';
 const HEADER_LINKS = [
